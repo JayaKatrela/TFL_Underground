@@ -31,7 +31,7 @@ object incrload_tfl {
     println(s"Maximum ID in Hive table: $maxIdHive")
 
     // Read data from the PostgreSQL table into a DataFrame
-    val query = s"(SELECT * FROM new_tfl2 WHERE id > $maxIdHive) AS incremental_data"
+    val query = s"(SELECT * FROM new_tfl2 WHERE uid > $maxIdHive) AS incremental_data"
     val df_postgres = spark.read
       .jdbc(jdbcUrl, query, dbProperties)  // Replace "your_table_name" with your table name
 
