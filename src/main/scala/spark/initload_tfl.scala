@@ -97,5 +97,3 @@ object initload_tfl {
   }
 }
 
-
-}
