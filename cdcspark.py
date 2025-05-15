@@ -1,6 +1,4 @@
 from pyspark.sql import SparkSession
-from datetime import datetime
-
 # Initialize Spark
 spark = SparkSession.builder \
     .appName("Dynamic CDC Pipeline") \
