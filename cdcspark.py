@@ -24,7 +24,9 @@ for row in active_tables:
     target_path = row['s3://cdcimplementation/cdc1/']
 
     # Step 2: Load changed data from source table
-    query = f"(SELECT * FROM cdc1 WHERE {tracking_col} > '{last_sync}') AS t"
+    #query = f"(SELECT * FROM cdc1 WHERE {tracking_col} > '{last_sync}') AS t"
+    query = "(SELECT * FROM cdc1 WHERE {} > '{}') AS t".format(tracking_col, last_sync)
+
     changed_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
 
     if changed_df.count() > 0:
