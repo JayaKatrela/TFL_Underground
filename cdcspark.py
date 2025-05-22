@@ -23,8 +23,8 @@ for row in metadata_rows:
     table = row['source_table']
     tracking_col = row['tracking_column']
     
-    query = f"(SELECT * FROM {table}) AS temp"
-    full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
+    query = "(SELECT * FROM {}) AS temp".format(table)
+    target_path = "s3a://cdcimplementation/cdc1/{}/".format(table)
     
     target_path = f"s3a://cdcimplementation/cdc1/{table}/"
 
