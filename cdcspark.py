@@ -5,7 +5,7 @@ spark = SparkSession.builder \
     .appName("nameof application ") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
-    .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.1") \
+    .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.2.0") \
     .getOrCreate()
 
 # PostgreSQL JDBC config
