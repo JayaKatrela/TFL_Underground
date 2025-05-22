@@ -29,7 +29,7 @@ for row in active_tables:
 
     # Step 2: Load changed data from source table
     #query = f"(SELECT * FROM cdc1 WHERE {tracking_col} > '{last_sync}') AS t"
-    query = f"(SELECT * FROM {table}) AS temp"
+    query = "(SELECT * FROM {}) AS temp".format(table)
     full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
 
     # Write to Parquet (overwrite mode for full load)
