@@ -1,4 +1,5 @@
-from pyspark.sql import SparkSession
+
+  from pyspark.sql import SparkSession
 
 # Initialize Spark
 spark = SparkSession.builder \
@@ -7,10 +8,12 @@ spark = SparkSession.builder \
 # Create a SparkSession
 spark = SparkSession.builder \
     .appName("nameof application ") \
-    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
+    .config("spark.hadoop.fs.s3a.access.key", "AKIA3ZWXJNFTVWT5E2VM") \
+    .config("spark.hadoop.fs.s3a.secret.key", "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") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.1") \
     .getOrCreate()
+
 
 # PostgreSQL JDBC config
 jdbc_url = "jdbc:postgresql://18.170.23.150:5432/testdb"
