@@ -24,6 +24,7 @@ for row in metadata_rows:
     tracking_col = row['tracking_column']
     
     query = "(SELECT * FROM {}) AS temp".format(table)
+    full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
     target_path = "s3a://cdcimplementation1/cdc_1/{}/".format(table)
 
     full_df.write.mode("overwrite").parquet(target_path)
