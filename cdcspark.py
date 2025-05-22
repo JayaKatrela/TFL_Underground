@@ -11,13 +11,18 @@ properties = {
     "password": "WelcomeItc@2022",
     "driver": "org.postgresql.Driver"
 }
+spark = SparkSession.builder \
+    .appName("CDC Job") \
+    .config("spark.jars", "/path/to/postgresql-<version>.jar") \
+    .getOrCreate()
+
 
 # Step 1: Load CDC metadata from PostgreSQL
 cdc_meta_df = spark.read.jdbc(url=jdbc_url, table="cdc_metadata", properties=properties)
 active_tables = cdc_meta_df.filter("is_active = true").collect()
 
 for row in active_tables:
-    table = row['cdc1']
+    table = row['source_table']
     pk = row['user_id']
     tracking_col = row['username']
     last_sync = row['created_at']
