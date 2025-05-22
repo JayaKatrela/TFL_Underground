@@ -25,8 +25,7 @@ for row in active_tables:
     table = row['source_table']
     pk = row['primary_key']
     tracking_col = row['tracking_column']
-    target_path = row['s3://cdcimplementation/cdc1/{table}'] 
-
+    target_path = "s3://cdcimplementation/cdc1/{}".format(table)
     # Step 2: Load changed data from source table
     #query = f"(SELECT * FROM cdc1 WHERE {tracking_col} > '{last_sync}') AS t"
     query = "(SELECT * FROM {}) AS temp".format(table)
