@@ -1,12 +1,12 @@
 from pyspark.sql import SparkSession
-
 # Create a SparkSession
 spark = SparkSession.builder \
     .appName("nameof application ") \
-    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
+    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.profile.ProfileCredentialsProvider") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.2.0") \
     .getOrCreate()
+# Initialize Spark with all needed configs in ONE session
 
 # PostgreSQL JDBC config
 jdbc_url = "jdbc:postgresql://18.170.23.150:5432/testdb"
@@ -26,6 +26,8 @@ for row in metadata_rows:
     query = "(SELECT * FROM {}) AS temp".format(table)
     full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
     target_path = "s3a://cdcimplementation1/cdc_1/{}/".format(table)
+    
+    
 
     full_df.write.mode("overwrite").parquet(target_path)
 
