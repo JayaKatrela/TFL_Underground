@@ -46,5 +46,4 @@ for row in active_tables:
     conn.commit()
     cur.close()
     conn.close()
-    print(f"[INFO] Full load completed for {table} — max({tracking_col}) = {max_tracking_val}")
 spark.stop()
