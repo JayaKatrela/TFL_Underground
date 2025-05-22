@@ -24,9 +24,7 @@ for row in metadata_rows:
     tracking_col = row['tracking_column']
     
     query = "(SELECT * FROM {}) AS temp".format(table)
-    target_path = "s3a://cdcimplementation/cdc1/{}/".format(table)
-    
-    target_path = f"s3a://cdcimplementation/cdc1/{table}/"
+    target_path = "s3a://cdcimplementation1/cdc_1/{}/".format(table)
 
     full_df.write.mode("overwrite").parquet(target_path)
 
