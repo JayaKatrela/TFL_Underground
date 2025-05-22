@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Run Spark Job') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'aws-creds', 
+                withCredentials([usernamePassword(credentialsId: 'jaya-aws-credentials', 
                                                  usernameVariable: 'AWS_ACCESS_KEY_ID', 
                                                  passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh '''
