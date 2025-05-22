@@ -26,7 +26,7 @@ for row in metadata_rows:
     tracking_col = row['tracking_column']
     
     # Read full table
-    query = f"(SELECT * FROM {table}) AS temp"
+    query = "(SELECT * FROM {}) AS temp".format(table)
     full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
     
     # Define S3 target path
