@@ -1,7 +1,9 @@
 
   from pyspark.sql import SparkSession
 import psycopg2
-
+spark = SparkSession.builder \
+    .appName("Dynamic CDC Pipeline") \
+    .getOrCreate()
 # Initialize Spark with all needed configs in ONE session
 spark = SparkSession.builder \
     .appName("Dynamic CDC Pipeline") \
