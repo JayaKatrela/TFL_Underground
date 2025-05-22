@@ -1,11 +1,13 @@
 from pyspark.sql import SparkSession
 # Create a SparkSession
 spark = SparkSession.builder \
-    .appName("nameof application ") \
+    .appName("CDC Application") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.profile.ProfileCredentialsProvider") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
+    .config("spark.hadoop.fs.s3a.path.style.access", "true") \
     .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.2.0") \
     .getOrCreate()
+
 # Initialize Spark with all needed configs in ONE session
 
 # PostgreSQL JDBC config
