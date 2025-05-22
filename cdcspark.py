@@ -30,7 +30,7 @@ for row in metadata_rows:
     full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
     
     # Define S3 target path
-    target_path = f"s3a://cdcimplementation/cdc1/{table}/"
+    target_path = "s3a://cdcimplementation/cdc1/{}/".format(table)
 
     # Write to S3 (overwrite for full load)
     full_df.write.mode("overwrite").parquet(target_path)
