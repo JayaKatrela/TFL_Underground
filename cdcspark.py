@@ -1,17 +1,12 @@
 
   from pyspark.sql import SparkSession
 import psycopg2
+# Create a SparkSession
 spark = SparkSession.builder \
-    .appName("Dynamic CDC Pipeline") \
-    .getOrCreate()
-# Initialize Spark with all needed configs in ONE session
-spark = SparkSession.builder \
-    .appName("Dynamic CDC Pipeline") \
-    .config("spark.hadoop.fs.s3a.access.key", "AKIA3ZWXJNFTVWT5E2VM") \
-    .config("spark.hadoop.fs.s3a.secret.key", "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") \
+    .appName("nameof application ") \
+    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.3.1") \
-    .config("spark.jars", "/path/to/postgresql-<version>.jar") \
     .getOrCreate()
 
 # PostgreSQL JDBC config
