@@ -1,6 +1,5 @@
+ from pyspark.sql import SparkSession
 
-  from pyspark.sql import SparkSession
-import psycopg2
 # Create a SparkSession
 spark = SparkSession.builder \
     .appName("nameof application ") \
