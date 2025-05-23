@@ -7,7 +7,7 @@ spark = SparkSession.builder \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider") \
     .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.2.0") \
     .config("spark.hadoop.fs.s3a.access.key", ("AKIA3ZWXJNFTVSIP646W") \
-    .config("spark.hadoop.fs.s3a.secret.key", ("")) \
+    .config("spark.hadoop.fs.s3a.secret.key", ("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")) \
     .config("spark.hadoop.fs.s3a.endpoint", "s3.eu-west-2.amazonaws.com") \
     .getOrCreate()
 
