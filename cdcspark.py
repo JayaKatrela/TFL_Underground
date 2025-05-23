@@ -1,4 +1,6 @@
 import os
+import psycopg2
+
 from pyspark.sql import SparkSession
 
 spark = SparkSession.builder \
