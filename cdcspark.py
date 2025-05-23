@@ -13,9 +13,7 @@ spark = SparkSession.builder \
     .config("spark.hadoop.fs.s3a.endpoint", "s3.eu-west-2.amazonaws.com") \
     .getOrCreate()
 
-
 # Initialize Spark with all needed configs in ONE session
-
 # PostgreSQL JDBC config
 jdbc_url = "jdbc:postgresql://18.170.23.150:5432/testdb"
 properties = {
