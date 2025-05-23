@@ -31,7 +31,8 @@ for row in metadata_rows:
     
     query = "(SELECT * FROM {}) AS temp".format(table)
     full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
-    target_path = f"s3a://cdcimplementation1/cdc_{idx}/{table}/"
+    target_path = "s3a://cdcimplementation1/cdc_{}/{}".format(idx, table)
+
     
     
 
