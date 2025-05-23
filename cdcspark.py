@@ -25,7 +25,7 @@ properties = {
 metadata_df = spark.read.jdbc(url=jdbc_url, table="cdc_metadata", properties=properties)
 metadata_rows = metadata_df.collect()
 
-for row in metadata_rows:
+for idx, row in enumerate(metadata_rows, start=1):
     table = row['source_table']
     tracking_col = row['tracking_column']
     
