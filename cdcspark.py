@@ -33,9 +33,6 @@ for idx, row in enumerate(metadata_rows, start=1):
     full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
     target_path = "s3a://cdcimplementation1/cdc_{}/{}".format(idx, table)
 
-    
-    
-
     full_df.write.mode("overwrite").parquet(target_path)
 
     max_timestamp = full_df.agg({tracking_col: "max"}).collect()[0][0]
