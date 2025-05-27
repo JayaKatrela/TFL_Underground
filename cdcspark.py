@@ -28,10 +28,11 @@ for idx, row in enumerate(metadata_rows, start=1):
     last_synced_at = row['last_synced_at']
 
     # Step 3: Query for incremental records only
-       if last_synced_at:
-         query = "(SELECT * FROM {} WHERE {} > '{}') AS temp".format(table, tracking_col, last_synced_at)
+      if last_synced_at:
+    query = "(SELECT * FROM {} WHERE {} > '{}') AS temp".format(table, tracking_col, last_synced_at)
 else:
     query = "(SELECT * FROM {}) AS temp".format(table)
+
 
 
     inc_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
