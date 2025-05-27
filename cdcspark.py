@@ -38,7 +38,7 @@ else:
     inc_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
 
     if inc_df.count() == 0:
-        print(f"No new data for table {table}, skipping...")
+        print("No new data for table {}, skipping...".format(table))
         continue
 
     # Step 4: Save incremental data to S3
