@@ -1,18 +1,15 @@
 import os
 import psycopg2
-
 from pyspark.sql import SparkSession
 
 spark = SparkSession.builder \
-    .appName("nameof application") \
+    .appName("Incremental CDC Load") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider") \
     .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:3.2.0") \
     .config("spark.hadoop.fs.s3a.endpoint", "s3.eu-west-2.amazonaws.com") \
     .getOrCreate()
 
-# Initialize Spark with all needed configs in ONE session
-# PostgreSQL JDBC config
 jdbc_url = "jdbc:postgresql://18.170.23.150:5432/testdb"
 properties = {
     "user": "consultants",
@@ -20,22 +17,36 @@ properties = {
     "driver": "org.postgresql.Driver"
 }
 
+# Step 1: Read metadata
 metadata_df = spark.read.jdbc(url=jdbc_url, table="cdc_metadata", properties=properties)
 metadata_rows = metadata_df.collect()
 
+# Step 2: Process each table based on last_synced_at
 for idx, row in enumerate(metadata_rows, start=1):
     table = row['source_table']
     tracking_col = row['tracking_column']
-    
-    query = "(SELECT * FROM {}) AS temp".format(table)
-    full_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
-    target_path = "s3a://cdcimplementation1/cdc_{}/{}".format(idx, table)
+    last_synced_at = row['last_synced_at']
 
-    full_df.write.mode("overwrite").parquet(target_path)
+    # Step 3: Query for incremental records only
+    if last_synced_at:
+        query = f"(SELECT * FROM {table} WHERE {tracking_col} > '{last_synced_at}') AS temp"
+    else:
+        # First time load or fallback
+        query = f"(SELECT * FROM {table}) AS temp"
 
-    max_timestamp = full_df.agg({tracking_col: "max"}).collect()[0][0]
+    inc_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
 
-    # Update metadata in PostgreSQL
+    if inc_df.count() == 0:
+        print(f"No new data for table {table}, skipping...")
+        continue
+
+    # Step 4: Save incremental data to S3
+    target_path = f"s3a://cdcimplementation1/cdc_{idx}/{table}"
+    inc_df.write.mode("append").parquet(target_path)
+
+    # Step 5: Update last_synced_at
+    max_timestamp = inc_df.agg({tracking_col: "max"}).collect()[0][0]
+
     conn = psycopg2.connect(
         host="18.170.23.150", dbname="testdb",
         user="consultants", password="WelcomeItc@2022"
