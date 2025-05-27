@@ -39,7 +39,7 @@ else:
 
     if inc_df.count() == 0:
         print("No new data for table {}, skipping...".format(table))
-    continue
+        continue
 
     # Step 4: Save incremental data to S3
     target_path = "s3a://cdcimplementation1/cdc_{}/{}".format(idx, table)
