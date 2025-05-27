@@ -41,7 +41,7 @@ for idx, row in enumerate(metadata_rows, start=1):
         continue
 
     # Step 4: Save incremental data to S3
-    target_path = f"s3a://cdcimplementation1/cdc_{idx}/{table}"
+    target_path = "s3a://cdcimplementation1/cdc_{}/{}".format(idx, table)
     inc_df.write.mode("append").parquet(target_path)
 
     # Step 5: Update last_synced_at
