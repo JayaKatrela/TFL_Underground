@@ -27,19 +27,19 @@ for idx, row in enumerate(metadata_rows, start=1):
     tracking_col = row['tracking_column']
     last_synced_at = row['last_synced_at']
 
-    # Step 3: Query for incremental records only
-if last_synced_at:
-    query = "(SELECT * FROM {} WHERE {} > '{}') AS temp".format(table, tracking_col, last_synced_at)
-else:
-    query = "(SELECT * FROM {}) AS temp".format(table)
-
-
+    if last_synced_at:
+        query = "(SELECT * FROM {} WHERE {} > '{}') AS temp".format(table, tracking_col, last_synced_at)
+    else:
+        query = "(SELECT * FROM {}) AS temp".format(table)
 
     inc_df = spark.read.jdbc(url=jdbc_url, table=query, properties=properties)
 
     if inc_df.count() == 0:
         print("No new data for table {}, skipping...".format(table))
-        continue
+        continue  # This must be inside the for loop
+
+
+
 
     # Step 4: Save incremental data to S3
     target_path = "s3a://cdcimplementation1/cdc_{}/{}".format(idx, table)
