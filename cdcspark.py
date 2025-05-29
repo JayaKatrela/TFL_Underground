@@ -43,7 +43,7 @@ for idx, row in enumerate(metadata_rows, start=1):
 
     # Step 4: Save incremental data to S3
     target_path = "s3a://cdcimplementation1/cdc_{}/{}".format(idx, table)
-    inc_df.write.mode("override").parquet(target_path)
+    inc_df.write.mode("append").parquet(target_path)
 
     # Step 5: Update last_synced_at
     max_timestamp = inc_df.agg({tracking_col: "max"}).collect()[0][0]
