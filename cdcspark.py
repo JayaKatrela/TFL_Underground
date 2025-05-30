@@ -38,9 +38,6 @@ for idx, row in enumerate(metadata_rows, start=1):
         print("No new data for table {}, skipping...".format(table))
         continue  # This must be inside the for loop
 
-
-
-
     # Step 4: Save incremental data to S3
     target_path = "s3a://cdcimplementation1/cdc_{}/{}".format(idx, table)
     inc_df.write.mode("append").parquet(target_path)
